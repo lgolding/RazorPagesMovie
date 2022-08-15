@@ -36,6 +36,11 @@ namespace RazorPagesMovie.Pages.Movies
                     movies = movies.Where(m => m.Title.Contains(SearchString));
                 }
 
+                if (!string.IsNullOrEmpty(MovieGenre))
+                {
+                    movies = movies.Where(m => m.Genre == MovieGenre);
+                }
+
                 Movie = await movies.ToListAsync();
             }
         }
