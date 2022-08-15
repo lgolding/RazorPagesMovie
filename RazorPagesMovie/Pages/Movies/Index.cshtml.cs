@@ -30,7 +30,10 @@ namespace RazorPagesMovie.Pages.Movies
         {
             if (_context.Movie != null)
             {
+                // Get the list of movies.
                 IQueryable<Movie> movies = _context.Movie;
+
+                // Filter by search string and genre is specified.
                 if (!string.IsNullOrEmpty(SearchString))
                 {
                     movies = movies.Where(m => m.Title.Contains(SearchString));
@@ -42,6 +45,10 @@ namespace RazorPagesMovie.Pages.Movies
                 }
 
                 Movie = await movies.ToListAsync();
+
+                // Get the list of all genres mentioned in any movie.
+                IQueryable<string> genreQuery = _context.Movie.Select(m => m.Genre).OrderBy(g => g).Distinct();
+                Genres = new SelectList(await genreQuery.ToListAsync());
             }
         }
     }
